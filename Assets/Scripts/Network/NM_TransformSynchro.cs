@@ -14,48 +14,67 @@ public class NM_TransformSynchro : NM_NetworkItem
     Vector3 localRotation = Vector3.zero;
     Vector3 localScale = Vector3.zero;
 
-    
+
     protected override void OnLocal()
     {
-        localMovement = transform.position;
-        localRotation = transform.eulerAngles;
-        localScale = transform.localScale;
+        if (synchroPosition) localMovement = transform.position;
+        if (synchroRotation) localRotation = transform.eulerAngles;
+        if (synchroScale) localScale = transform.localScale;
     }
     protected override void OnOnline()
     {
-        transform.position = Vector3.MoveTowards(transform.position, localMovement, Time.deltaTime * 20);
-        transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, localRotation, Time.deltaTime * 200);
-        transform.localScale = Vector3.MoveTowards(transform.localScale, localScale, Time.deltaTime * 20);
+        if (synchroPosition) transform.position = Vector3.MoveTowards(transform.position, localMovement, Time.deltaTime * 20);
+        if (synchroRotation) transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, localRotation, Time.deltaTime * 200);
+        if (synchroScale) transform.localScale = Vector3.MoveTowards(transform.localScale, localScale, Time.deltaTime * 20);
     }
     public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(localMovement.x);
-            stream.SendNext(localMovement.y);
-            stream.SendNext(localMovement.z);
+            if (synchroPosition)
+            {
+                stream.SendNext(localMovement.x);
+                stream.SendNext(localMovement.y);
+                stream.SendNext(localMovement.z);
+            }
 
-            stream.SendNext(localRotation.x);
-            stream.SendNext(localRotation.y);
-            stream.SendNext(localRotation.z);
+            if (synchroRotation)
+            {
+                stream.SendNext(localRotation.x);
+                stream.SendNext(localRotation.y);
+                stream.SendNext(localRotation.z);
+            }
 
-            stream.SendNext(localScale.x);
-            stream.SendNext(localScale.y);
-            stream.SendNext(localScale.z);
+            if (synchroScale)
+            {
+                stream.SendNext(localScale.x);
+                stream.SendNext(localScale.y);
+                stream.SendNext(localScale.z);
+            }
+
         }
         else
         {
-            localMovement.x = (float)stream.ReceiveNext();
-            localMovement.y = (float)stream.ReceiveNext();
-            localMovement.z = (float)stream.ReceiveNext();
+            if (synchroPosition)
+            {
+                localMovement.x = (float)stream.ReceiveNext();
+                localMovement.y = (float)stream.ReceiveNext();
+                localMovement.z = (float)stream.ReceiveNext();
+            }
 
-            localRotation.x = (float)stream.ReceiveNext();
-            localRotation.y = (float)stream.ReceiveNext();
-            localRotation.z = (float)stream.ReceiveNext();
+            if (synchroRotation)
+            {
+                localRotation.x = (float)stream.ReceiveNext();
+                localRotation.y = (float)stream.ReceiveNext();
+                localRotation.z = (float)stream.ReceiveNext();
+            }
 
-            localScale.x = (float)stream.ReceiveNext();
-            localScale.y = (float)stream.ReceiveNext();
-            localScale.z = (float)stream.ReceiveNext();
+            if (synchroScale)
+            {
+                localScale.x = (float)stream.ReceiveNext();
+                localScale.y = (float)stream.ReceiveNext();
+                localScale.z = (float)stream.ReceiveNext();
+            }
         }
     }
 }
