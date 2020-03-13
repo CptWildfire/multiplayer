@@ -145,6 +145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myID: {fileID: 8331609187840634157}
-  synchroPosition: 0
-  synchroRotation: 0
-  synchroScale: 0
+  synchroPosition: 1
+  synchroRotation: 1
+  synchroScale: 1
