@@ -6,6 +6,7 @@ using Photon.Realtime;
 
 public class NM_NetworkManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField] string version = "2.0";
     //
     public override void OnConnectedToMaster()
     {
@@ -26,7 +27,7 @@ public class NM_NetworkManager : MonoBehaviourPunCallbacks
     //
     private void Connect()
     {
-        PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = "2.0";
+        PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = version;
         PhotonNetwork.ConnectUsingSettings();
     }
     //
