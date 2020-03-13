@@ -10,7 +10,8 @@ public class NM_PlayerNetwork : MonoBehaviour, IPunObservable
 
     private void Start()
     {
-        name = myID.ViewID.ToString();
+        //name = myID.ViewID.ToString();
+        name = myID.Owner.NickName;
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){}
 }

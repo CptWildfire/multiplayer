@@ -7,6 +7,7 @@ using Photon.Realtime;
 public class NM_NetworkManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] string version = "2.0";
+    string nickName = "_Player";
     //
     public override void OnConnectedToMaster()
     {
@@ -23,6 +24,8 @@ public class NM_NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log("Joined room O3D");
         PhotonView _id = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity).GetPhotonView();
         _id.name = _id.ViewID.ToString();
+        if (string.IsNullOrEmpty(nickName)) nickName = "_Player";
+        _id.Owner.NickName = nickName;
     }
     //
     private void Connect()
@@ -41,6 +44,7 @@ public class NM_NetworkManager : MonoBehaviourPunCallbacks
         GUILayout.Box(PhotonNetwork.IsMasterClient.ToString());
         GUILayout.Box(PhotonNetwork.CurrentRoom?.Name);
         GUILayout.Box($"{PhotonNetwork.CurrentRoom?.PlayerCount}/{PhotonNetwork.CurrentRoom?.MaxPlayers}");
+        nickName = GUILayout.TextField(nickName);
         if(GUILayout.Button("Join"))
             Connect();
     }
